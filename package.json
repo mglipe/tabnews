@@ -1,0 +1,24 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "description": "criando um projeto next com react e utilizando docker",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mglipe/tabnews.git"
+  },
+  "author": "Garcia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mglipe/tabnews/issues"
+  },
+  "homepage": "https://github.com/mglipe/tabnews#readme",
+  "dependencies": {
+    "next": "^13.1.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
