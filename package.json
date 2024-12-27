@@ -4,7 +4,15 @@
   "description": "criando um projeto next com react e utilizando docker",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev"
+    "build": "next build",
+    "dev": " npm run database:up && next dev",
+    "start": "node server.js",
+    "lint:check": "prettier --check .",
+    "lint:fix": "prettier --write .",
+    "test": "jest --watchAll",
+    "database:up": "docker compose --file infra/docker-compose.yaml up database --detach",
+    "database:down": "docker compose --file infra/docker-compose.yaml down database",
+    "database:stop": "docker compose --file infra/docker-compose.yaml stop database"
   },
   "repository": {
     "type": "git",
@@ -18,7 +26,13 @@
   "homepage": "https://github.com/mglipe/tabnews#readme",
   "dependencies": {
     "next": "^13.1.6",
+    "pg": "^8.11.3",
+    "project": "file:",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "jest": "^29.6.2",
+    "prettier": "^3.4.2"
   }
 }
