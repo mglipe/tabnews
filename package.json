@@ -10,9 +10,9 @@
     "lint:check": "prettier --check .",
     "lint:fix": "prettier --write .",
     "test": "jest --watchAll",
-    "database:up": "docker compose --file infra/docker-compose.yaml up database --detach",
-    "database:down": "docker compose --file infra/docker-compose.yaml down database",
-    "database:stop": "docker compose --file infra/docker-compose.yaml stop database"
+    "database:up": "docker compose --file infra/compose.yaml up database --detach",
+    "database:down": "docker compose --file infra/compose.yaml down database",
+    "database:stop": "docker compose --file infra/compose.yaml stop database"
   },
   "repository": {
     "type": "git",
