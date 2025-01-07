@@ -9,13 +9,15 @@ async function query(queryObject) {
     database: process.env.POSTGRES_DB,
   });
 
+  await client.connect();
+
   try {
-    await client.connect();
-    const query = client.query(queryObject);
+    const query = await client.query(queryObject);
     return query;
   } catch (error) {
+    console.log(error);
+  } finally {
     await client.end();
-    throw new Error("Database error: " + error);
   }
 }
 
