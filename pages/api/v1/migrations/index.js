@@ -3,47 +3,51 @@ import { join } from "node:path";
 import database from "infra/database";
 
 export default async function migrations(request, response) {
-  const dbClient = await database.getNewClient();
+  const allowedMethods = ["GET", "POST"];
 
-  const defaultMigrationOptions = {
-    //databaseUrl: process.env.DATABASE_URL,
-    dbClient: dbClient,
-    dir: join("infra", "migrations"),
-    direction: "up",
-    dryRun: true,
-    verbose: true,
-    migrationsTable: "pgmigrations",
-  };
-
-  const methods = ["GET", "POST"];
-
-  if (!methods.includes(request.method)) {
-    await dbClient.end();
-    return response.status(401).json({ Erro: "Unauthorized" });
+  if (!allowedMethods.includes(request.method)) {
+    return response
+      .status(405)
+      .json({ Erro: `method: ${request.method} not allowed` });
   }
 
-  if (request.method === "POST") {
-    const migratedMigrate = await migrationRunner({
-      ...defaultMigrationOptions,
-      dryRun: false,
-    });
+  let dbClient;
 
-    await dbClient.end();
+  try {
+    dbClient = await database.getNewClient();
 
-    if (migratedMigrate.length > 0) {
-      return response.status(201).json(migratedMigrate);
+    const defaultMigrationOptions = {
+      //databaseUrl: process.env.DATABASE_URL,
+      dbClient: dbClient,
+      dir: join("infra", "migrations"),
+      direction: "up",
+      dryRun: true,
+      verbose: true,
+      migrationsTable: "pgmigrations",
+    };
+
+    if (request.method === "POST") {
+      const migratedMigrate = await migrationRunner({
+        ...defaultMigrationOptions,
+        dryRun: false,
+      });
+
+      if (migratedMigrate.length > 0) {
+        return response.status(201).json(migratedMigrate);
+      }
+
+      return response.status(200).json(migratedMigrate);
     }
 
-    return response.status(200).json(migratedMigrate);
-  }
+    if (request.method === "GET") {
+      const pendingMigrate = await migrationRunner(defaultMigrationOptions);
 
-  if (request.method === "GET") {
-    const pendingMigrate = await migrationRunner(defaultMigrationOptions);
-
+      return response.status(200).json(pendingMigrate);
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  } finally {
     await dbClient.end();
-
-    return response.status(200).json(pendingMigrate);
   }
-
-  return response.status(405).end();
 }
