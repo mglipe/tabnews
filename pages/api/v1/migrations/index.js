@@ -15,6 +15,13 @@ export default async function migrations(request, response) {
     migrationsTable: "pgmigrations",
   };
 
+  const methods = ["GET", "POST"];
+
+  if (!methods.includes(request.method)) {
+    await dbClient.end();
+    return response.status(401).json({ Erro: "Unauthorized" });
+  }
+
   if (request.method === "POST") {
     const migratedMigrate = await migrationRunner({
       ...defaultMigrationOptions,
