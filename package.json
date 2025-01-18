@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "next build",
-    "dev": " npm run database:up && next dev",
+    "dev": " npm run database:up && npm run wait-for-postgres && npm run migrate:up && next dev",
     "start": "node server.js",
     "lint:check": "prettier --check .",
     "lint:fix": "prettier --write .",
@@ -17,7 +17,9 @@
     "migrate": "node-pg-migrate",
     "migrate:create": "node-pg-migrate create --migrations-dir infra/migrations/",
     "migrate:up": "node-pg-migrate up -m infra/migrations --env-file .env",
-    "migrate:down": "node-pg-migrate down -m infra/migrations --env-file .env"
+    "migrate:down": "node-pg-migrate down -m infra/migrations --env-file .env",
+    "wait-for-postgres": "node infra/scripts/wait-for-postgres.js",
+    "ps": "node infra/scripts/teste.js"
   },
   "repository": {
     "type": "git",
@@ -30,6 +32,7 @@
   },
   "homepage": "https://github.com/mglipe/tabnews#readme",
   "dependencies": {
+    "dotenv-expand": "^11.0.6",
     "next": "^13.1.6",
     "pg": "^8.11.3",
     "project": "file:",
