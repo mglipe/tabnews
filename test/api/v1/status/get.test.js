@@ -1,3 +1,9 @@
+import orchestrator from "test/orchestrator.js";
+
+beforeAll(async () => {
+  await orchestrator.waitForAllServices();
+});
+
 test("running endpoint status", async () => {
   const response = await fetch("http://localhost:3000/api/v1/status");
   expect(response.status).toBe(200);

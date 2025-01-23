@@ -8,7 +8,7 @@ export default async function status(request, response) {
   //conexão máxima
   const maxConnection = await database.query("SHOW max_connections;");
   const maxConnectionValue = parseInt(maxConnection.rows[0].max_connections);
-
+  console.log("teste");
   const datname = process.env.POSTGRES_DB;
   //conexão usada
   const activeConnection = await database.query({
