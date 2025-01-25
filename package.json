@@ -38,7 +38,8 @@
     "pg": "^8.11.3",
     "project": "file:",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "swr": "2.2.5"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
