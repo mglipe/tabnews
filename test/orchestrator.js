@@ -1,4 +1,6 @@
 import retry from "async-retry";
+import database from "infra/database";
+import migration from "models/migrator";
 
 const URL = "http://localhost:3000";
 
@@ -22,6 +24,16 @@ async function waitForAllServices() {
   }
 }
 
+async function clearDatabase() {
+  await database.query("DROP schema public cascade; CREATE schema public");
+}
+
+async function runPendingMigrations() {
+  await migration.runMigrate();
+}
+
 export default {
   waitForAllServices,
+  clearDatabase,
+  runPendingMigrations,
 };
